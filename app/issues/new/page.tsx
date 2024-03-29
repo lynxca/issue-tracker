@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createIssueSchema } from "@/app/ValidationSchema";
 
 interface IssueForm {
   title: string;
@@ -13,7 +15,9 @@ interface IssueForm {
 }
 
 function NewIssuePage() {
-  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const { register, control, handleSubmit } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema),
+  });
   const router = useRouter();
   const [error, setError] = useState("");
   return (
