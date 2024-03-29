@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import React, { useState } from "react";
@@ -8,14 +8,22 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/ValidationSchema";
+import { z } from "zod";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+// interface IssueForm {
+//   title: string;
+//   description: string;
+// }
+
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 function NewIssuePage() {
-  const { register, control, handleSubmit } = useForm<IssueForm>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
   });
   const router = useRouter();
@@ -34,6 +42,7 @@ function NewIssuePage() {
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (error) {
+            console.log(error);
             setError("An expected error occurs");
           }
         })}
@@ -41,7 +50,12 @@ function NewIssuePage() {
         <TextField.Root placeholder="Title" {...register("title")}>
           <TextField.Slot />
         </TextField.Root>
-        {/* <TextArea placeholder="Description" /> */}
+        <TextArea placeholder="Description" />
+        {errors.title && (
+          <Text color="red" as="p">
+            {errors.title.message}
+          </Text>
+        )}
         <Controller
           name="description"
           control={control}
@@ -49,6 +63,11 @@ function NewIssuePage() {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
+        {errors.description && (
+          <Text color="red" as="p">
+            {errors.description.message}
+          </Text>
+        )}
 
         <Button>Submit new issue</Button>
       </form>
