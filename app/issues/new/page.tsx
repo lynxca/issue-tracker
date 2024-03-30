@@ -12,11 +12,6 @@ import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 
-// interface IssueForm {
-//   title: string;
-//   description: string;
-// }
-
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 function NewIssuePage() {
@@ -51,7 +46,7 @@ function NewIssuePage() {
       <form className="space-y-3" onSubmit={onSubmit}>
         <TextField.Root placeholder="Title" {...register("title")}>
           <TextField.Slot />
-        </TextField.Root>{" "}
+        </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
