@@ -1,14 +1,17 @@
 import React from "react";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
-import { number } from "zod";
 
-async function IssueDetailPage({ params }: { params: { id: string } }) {
-  if (typeof params.id !== "number") notFound();
+interface Props {
+  params: { id: string };
+}
+
+async function IssueDetailPage({ params }: Props) {
+  if (!parseInt(params.id)) notFound();
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
   });
-  if (typeof params.id !== "number") notFound();
+  console.log("suc");
   if (!issue) notFound();
   return (
     <div>
