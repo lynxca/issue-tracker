@@ -11,10 +11,11 @@ import { createIssueSchema } from "@/app/ValidationSchema";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+import delay from "delay";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
-function NewIssuePage() {
+async function NewIssuePage() {
   const {
     register,
     control,
@@ -36,6 +37,7 @@ function NewIssuePage() {
       setError("An expected error occurs");
     }
   });
+  await delay(2000)
   return (
     <div className="max-w-xl space-y-3">
       {error && (
