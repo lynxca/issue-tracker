@@ -1,21 +1,24 @@
 "use client";
-import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/ValidationSchema";
-import { z } from "zod";
+
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+import { createIssueSchema } from "@/app/ValidationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Callout, TextField } from "@radix-ui/themes";
+import axios from "axios";
 import delay from "delay";
+import "easymde/dist/easymde.min.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {ssr: false});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
-async function NewIssuePage() {
+function NewIssuePage() {
   const {
     register,
     control,
@@ -37,7 +40,7 @@ async function NewIssuePage() {
       setError("An expected error occurs");
     }
   });
-  await delay(2000)
+
   return (
     <div className="max-w-xl space-y-3">
       {error && (
