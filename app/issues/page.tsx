@@ -25,7 +25,7 @@ async function IssuesPage() {
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-                <Link href={`/issues/${issue.id}`} >{issue.title}</Link>
+                <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                 <div className="block md:hidden">
                   <IssueStatusBadge status={issue.status} />
                 </div>
@@ -43,4 +43,7 @@ async function IssuesPage() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
+// export const revalidate = 0;
 export default IssuesPage;
